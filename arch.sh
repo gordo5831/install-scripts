@@ -1,15 +1,9 @@
+#meow nya~
 
-echo "Enter usr name"
-read usr
-
-echo "Enter usr password"
-read passwd
-
-echo "Enter root passwd" 
-read root
-
-echo "Enter hostname"
-read hostname
+read -p "Enter usr name: " usr
+read -p "Enter passwd: " passwd
+read -p "Enter root passwd: " root
+read -p "Enter hostname: " hstnm
 
 # make filesystems
 echo "-------------------------"
@@ -33,14 +27,14 @@ mount /dev/sda3 /mnt
 echo "-------------------------"
 echo "-INSTALLING BASE SYSTEM--"
 echo "-------------------------"
-pacstrap /mnt base linux linux-firmware sudo nano grub networkmanager efibootmgr sof-firmware base-devel
+pacstrap /mnt base linux linux-firmware sudo nano grub networkmanager efibootmgr sof-firmware base-devel -y
 
 #genfstab
 genfstab /mnt > /mnt/etc/fstab
 
 #add usr 
 usr add -m -G wheel -s /bin/bash $usr
-echo $hostname >> /etc/hostname
+echo $hstnm >> /etc/hostname
 passwd $usr $passwd
 passwd $root
 
