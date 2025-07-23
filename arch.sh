@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 
 echo "Enter usr name"
 read usr
@@ -39,15 +38,26 @@ pacstrap /mnt base linux linux-firmware sudo nano grub networkmanager efibootmgr
 #genfstab
 genfstab /mnt > /mnt/etc/fstab
 
-#add usr/permitions
+#add usr 
 usr add -m -G wheel -s /bin/bash $usr
+echo $hostname >> /etc/hostname
 passwd $usr $passwd
+passwd $root
 
 sed -i 's/^# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
-sed -i 's/^%wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) NOPASSWD: ALL/' /etc/sudoers
 
 #locale config 
 echo "-------------------------"
 echo "---CONFIGUREING LOCALE---"
 echo "-------------------------"
 
+ln -sf /usr/share/zoneinfo/America/Chicago /etc/localetime 
+hwclock --systohc 
+
+echo "LANG=en_US.UTF-8" >> /etc/locale.conf
+
+systemctl enable NetworkManager
+
+echo "-------------------------"
+echo "----INSTALL COMPLETE-----"
+echo "-------------------------"
